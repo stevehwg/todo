@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Navbar from './components/navs/Navbar';
+import AddTodo from './components/todos/CreateTodo';
+import TodoList from './components/todos/TodoList';
+
+// connect to redux
+import { connect } from 'react-redux';
 
 class App extends Component {
   render() {
+    const { todoList } = this.props;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container App">
+        <Navbar />
+        <div className="row">
+          <div className="center-align col s12 m6">
+            <TodoList todoList={todoList} />
+          </div>
+          <div className="center-align col s12 m6"><p>Notification</p></div>
+        </div>
+        <div className="row">
+          <div className="col s12 m12">
+            <AddTodo />
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+// state is from rootReducer
+const mapStateToProps = state => {
+  return {
+    todoList: state.todo.todoList
+  }
+}
+
+export default connect(mapStateToProps)(App);
