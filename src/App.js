@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from './components/navs/Navbar';
-import AddTodo from './components/todos/CreateTodo';
+import AddTodo from './components/todos/AddTodo';
 import TodoList from './components/todos/TodoList';
 
 // connect to redux

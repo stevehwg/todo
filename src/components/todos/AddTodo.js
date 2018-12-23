@@ -23,29 +23,32 @@ class AddTodo extends Component {
         // console.log(this.state)
         this.props.addTodo(this.state)
     }
-    
-    
+
     render() {
-        // console.log(this.state);
-        return (
-            <div className="container">
-                <form onSubmit={this.handleSubmit}>
-                    <Row>
-                        <Input s={6} id="subject" onChange={this.handleChange} label="Subject" />
-                        <Input s={6} id="content" onChange={this.handleChange} label="Content" />
-                    </Row>
-                    <Button className="btn deep-orange" waves='light'>Add</Button>
-                </form>
-            </div>
-        )
-    }
+            return (
+                <div className="container">
+                    <form onSubmit={this.handleSubmit}>
+                        <Row>
+                            <Input s={6} id="subject" onChange={this.handleChange} label="Subject" />
+                            <Input s={6} id="content" onChange={this.handleChange} label="Content" />
+                        </Row>
+                        <Button className="btn deep-orange" waves='light'>Add</Button>
+                    </form>
+                </div>
+            )}
 }
 
 // dispatch to redux for processing.
 const mapDispatchToProps = dispatch => {
     return {
-        addTodo: (todo) => dispatch(addTodo(todo))
+        addTodo: (todo) => dispatch(addTodo(todo)),
     }
 }
 
-export default connect(null, mapDispatchToProps)(AddTodo);
+const mapStateToProps = state => {
+    return {
+        todoList: state.todo.todoList
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTodo);

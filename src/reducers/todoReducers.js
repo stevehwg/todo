@@ -1,4 +1,4 @@
-import { ADD_TODO } from '../constants';
+import { ADD_TODO, UPDATE_TODO, DELETE_TODO } from '../constants';
 
 const defaultState = {
     todoList: [
@@ -17,11 +17,17 @@ const todoReducer = (state = defaultState, action) => {
             const todo = action.todo
             // dummy id 
             todo['id'] = '4'
-            // console.log('state', state)
+            console.log("add todo")
             return {
                 ...state,
                 todoList: [...state.todoList, todo]
             }
+        case UPDATE_TODO:
+            console.log('update todo')
+            return state;
+        case DELETE_TODO:
+            console.log('delete todo')
+            return state;
         default:
             return state;
     }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Col, Card } from 'react-materialize'
+import { Row, Col, Card, Modal, Button } from 'react-materialize';
+import { TodoDetail } from './TodoDetail';
 
 const TodoList = ({todoList}) => {
     console.log('todoList', todoList)
@@ -9,8 +10,15 @@ const TodoList = ({todoList}) => {
             return (
                 <Col m={12} s={12} key={todo.id}>
                     <Card className='deep-orange lighten-2' textClassName='white-text' title={todo.subject}>
-                        {todo.content}
+                        <Row>{todo.content}</Row>
+                    <Modal
+                        trigger={<Button className="yellow lighten-2 black-text">Edit</Button>}
+                        actions={false}
+                    >
+                        <TodoDetail todo={todo}/>
+                    </Modal>
                     </Card>
+                    
                 </Col>
                 )
             })}
