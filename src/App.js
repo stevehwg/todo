@@ -6,8 +6,14 @@ import TodoList from './components/todos/TodoList';
 // connect to redux
 import { connect } from 'react-redux';
 
+//connect to firestore
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+
+
 class App extends Component {
   render() {
+    // console.log(this.props);
     const { todoList } = this.props;
     return (
       <div className="container App">
@@ -31,8 +37,14 @@ class App extends Component {
 // state is from rootReducer
 const mapStateToProps = state => {
   return {
-    todoList: state.todo.todoList
+    // todoList: state.todo.todoList,
+    todoList: state.firestore.ordered.todos
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    { collection: 'todos' }
+  ])
+)(App);

@@ -35,18 +35,13 @@ class UpdateTodo extends Component {
         // console.log(todo);
         return (
             <div className="container">
-                <form onSubmit={this.handleSubmit}>
-                    <Row>
-                        <Input s={6} id="subject" defaultValue={todo.subject} onChange={this.handleChange} label="Subject" />
-                        <Input s={6} id="content" defaultValue={todo.content} onChange={this.handleChange} label="Content" />
-                    </Row>
-                    <div className="modal-footer">
-                    <Button className="btn yellow lighten-2 black-text right" waves='light'>Update</Button>
-                    </div>
-                    
-                </form>
+                <Row>
+                    <Input s={6} id="subject" defaultValue={todo.subject} onChange={this.handleChange} label="Subject" />
+                    <Input s={6} id="content" defaultValue={todo.content} onChange={this.handleChange} label="Content" />
+                </Row>
                 <div className="modal-footer">
                     <Button className="btn red right" waves='light' onClick={this.handleDelete}>Delete</Button>
+                    <Button className="btn yellow lighten-2 black-text right" waves='light' onClick={this.handleSubmit}>Update</Button>
                 </div>
             </div>
         )}
