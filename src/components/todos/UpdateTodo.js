@@ -7,41 +7,51 @@ import { updateTodo, deleteTodo } from '../../actions/todoActions';
 
 class UpdateTodo extends Component {
     state = {
+        id: null,
         subject: '',
-        content: ''
+        content: '',
+    }
+    
+    componentDidMount() {
+        const {id, subject, content} = this.props.todo;
+        this.setState({
+            id,
+            subject,
+            content
+        })
     }
     
     handleChange = (e) => {
         this.setState({
           [e.target.id] : e.target.value
         })
-        // console.log(this.state)
     }
     
     handleSubmit = (e) => {
         e.preventDefault()
         // console.log(this.state)
-        this.props.updateTodo(this.state)
+        this.props.updateTodo(this.props.todo.id, this.state)
     }
     
     handleDelete = (e) => {
         e.preventDefault();
-        console.log(this.props.todo.id);
+        // console.log(this.props.todo.id);
         this.props.deleteTodo(this.props.todo.id)
     }
 
     render() {
-        const {todo} = this.props;
-        // console.log(todo);
+        // receive props from TodoDetail
+        // console.log(this.state)
+        const { subject, content } = this.state;
         return (
             <div className="container">
                 <Row>
-                    <Input s={6} id="subject" defaultValue={todo.subject} onChange={this.handleChange} label="Subject" />
-                    <Input s={6} id="content" defaultValue={todo.content} onChange={this.handleChange} label="Content" />
+                    <Input s={6} id="subject" value={subject} onChange={this.handleChange} label="Subject" />
+                    <Input s={6} id="content" value={content} onChange={this.handleChange} label="Content" />
                 </Row>
                 <div className="modal-footer">
-                    <Button className="btn red right" waves='light' onClick={this.handleDelete}>Delete</Button>
-                    <Button className="btn yellow lighten-2 black-text right" waves='light' onClick={this.handleSubmit}>Update</Button>
+                    <Button className="btn red right" waves='light' modal='close' onClick={this.handleDelete}>Delete</Button>
+                    <Button className="btn yellow lighten-2 black-text right" modal="close" waves='light' onClick={this.handleSubmit}>Update</Button>
                 </div>
             </div>
         )}
@@ -50,15 +60,9 @@ class UpdateTodo extends Component {
 // dispatch to redux for processing.
 const mapDispatchToProps = dispatch => {
     return {
-        updateTodo: (todo) => dispatch(updateTodo(todo)),
-        deleteTodo: (todo) => dispatch(deleteTodo(todo))        
+        updateTodo: (id, todo) => dispatch(updateTodo(id, todo)),
+        deleteTodo: (id) => dispatch(deleteTodo(id))
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        todoList: state.todo.todoList
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateTodo);
+export default connect(null, mapDispatchToProps)(UpdateTodo);

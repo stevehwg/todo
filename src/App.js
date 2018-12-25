@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Navbar from './components/navs/Navbar';
 import AddTodo from './components/todos/AddTodo';
 import TodoList from './components/todos/TodoList';
+import { Modal, Button } from 'react-materialize';
 
 // connect to redux
 import { connect } from 'react-redux';
@@ -26,7 +27,12 @@ class App extends Component {
         </div>
         <div className="row">
           <div className="col s12 m12">
-            <AddTodo />
+            <Modal
+              trigger={<Button className="yellow lighten-2 black-text">Add</Button>}
+              actions={false} // this is a default for a close button
+            >
+              <AddTodo />
+            </Modal>
           </div>
         </div>
       </div>
@@ -34,17 +40,19 @@ class App extends Component {
   }
 }
 
-// state is from rootReducer
+
 const mapStateToProps = state => {
   return {
+    // state is from rootReducer, "todo" is the name assigned to each reducer.
     // todoList: state.todo.todoList,
     todoList: state.firestore.ordered.todos
-  }
-}
+  };
+};
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'todos' }
+    // order by created time in descending order.
+    { collection: 'todos', orderBy: ['createdAt', 'desc'] }
   ])
 )(App);

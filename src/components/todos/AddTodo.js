@@ -22,20 +22,25 @@ class AddTodo extends Component {
         e.preventDefault()
         // console.log(this.state)
         this.props.addTodo(this.state)
+        this.setState({
+            subject: '',
+            content: ''
+        })
     }
 
     render() {
-            return (
-                <div className="container">
-                    <form onSubmit={this.handleSubmit}>
-                        <Row>
-                            <Input s={6} id="subject" onChange={this.handleChange} label="Subject" />
-                            <Input s={6} id="content" onChange={this.handleChange} label="Content" />
-                        </Row>
-                        <Button className="btn deep-orange" waves='light'>Add</Button>
-                    </form>
-                </div>
-            )}
+        // console.log(this.props)
+        return (
+            <div className="container">
+                <form onSubmit={this.handleSubmit}>
+                    <Row>
+                        <Input s={6} id="subject" defaultValue={this.state.subject} onChange={this.handleChange} label="Subject" />
+                        <Input s={6} id="content" defaultValue={this.state.content} onChange={this.handleChange} label="Content" />
+                    </Row>
+                    <Button className="yellow lighten-2 black-text right" waves='light' modal="close">Add</Button>
+                </form>
+            </div>
+        )}
 }
 
 // dispatch to redux for processing.
@@ -45,10 +50,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        todoList: state.todo.todoList
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddTodo);
+export default connect(null, mapDispatchToProps)(AddTodo);

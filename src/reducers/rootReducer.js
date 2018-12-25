@@ -9,6 +9,6 @@ const rootReducer = combineReducers({
     todo: todoReducers,
     firestore: firestoreReducer,
     firebase: firebaseReducer
-})
+});
 
 export default rootReducer;
