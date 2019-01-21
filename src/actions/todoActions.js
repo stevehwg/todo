@@ -1,12 +1,17 @@
 import { ADD_TODO, UPDATE_TODO, DELETE_TODO, ADD_ERROR } from '../constants';
 
 // this is when thunk comes in to do async calls.
-export const addTodo = (todo) => {
-    return (dispatch, getState, {firebase}) => {
-        // console.log(getFirestore)
-        // console.log(todo, firebase)
+export const addTodo = (todo, firestore) => {
+    return (dispatch, getState,) => {
+        // console.log('todo', todo, 'state', getState(), 'firestore', firestore)
+        const profile = getState().firebase.profile;
+        const authorId = getState().firebase.auth.uid;
         
-        firebase.firestore().collection('todos').add({
+        firestore.collection('todos').add({
+            // author info
+            author: `${profile.firstName} ${profile.lastName}`,
+            authorId: authorId,
+            // content info
             subject: todo.subject,
             content: todo.content,
             createdAt: new Date()
@@ -18,10 +23,10 @@ export const addTodo = (todo) => {
     };
 };
 
-export const updateTodo = (id, todo) => {
-    console.log(id, todo);
-    return (dispatch, getState, {firebase}) => {
-        firebase.firestore().collection('todos').doc(id).update({
+export const updateTodo = (id, todo, firestore) => {
+    // console.log(id, todo, firestore);
+    return (dispatch, getState) => {
+        firestore.collection('todos').doc(id).update({
             ...todo
         }).then(() => {
             dispatch({type: UPDATE_TODO, todo});
@@ -31,10 +36,10 @@ export const updateTodo = (id, todo) => {
     };
 };
 
-export const deleteTodo = (id) => {
+export const deleteTodo = (id, firestore) => {
     // console.log("id", id);
-    return (dispatch, getState, {firebase}) => {
-        firebase.firestore().collection('todos').doc(id).delete().then(
+    return (dispatch, getState) => {
+        firestore.collection('todos').doc(id).delete().then(
             () => {
                 dispatch({type: DELETE_TODO});
             })

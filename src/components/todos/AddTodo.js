@@ -4,50 +4,65 @@ import { Row, Input, Button } from 'react-materialize';
 import { connect } from 'react-redux';
 import { addTodo } from '../../actions/todoActions';
 
+import { compose } from 'redux';
+import { withFirebase, withFirestore } from 'react-redux-firebase';
 
 class AddTodo extends Component {
-    state = {
+  state = {
+    subject: '',
+    content: ''
+  }
+  
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id] : e.target.value
+    })
+    // console.log(this.state)
+  }
+  
+  handleSubmit = (e) => {
+    e.preventDefault()
+    // console.log(this.props.firebase)
+    this.props.addTodo(this.state, this.props.firestore)
+    this.setState({
         subject: '',
         content: ''
-    }
-    
-    handleChange = (e) => {
-        this.setState({
-          [e.target.id] : e.target.value
-        })
-        // console.log(this.state)
-    }
-    
-    handleSubmit = (e) => {
-        e.preventDefault()
-        // console.log(this.state)
-        this.props.addTodo(this.state)
-        this.setState({
-            subject: '',
-            content: ''
-        })
-    }
+    })
+  }
 
-    render() {
-        // console.log(this.props)
-        return (
-            <div className="container">
-                <form onSubmit={this.handleSubmit}>
-                    <Row>
-                        <Input s={6} id="subject" defaultValue={this.state.subject} onChange={this.handleChange} label="Subject" />
-                        <Input s={6} id="content" defaultValue={this.state.content} onChange={this.handleChange} label="Content" />
-                    </Row>
-                    <Button className="yellow lighten-2 black-text right" waves='light' modal="close">Add</Button>
-                </form>
-            </div>
-        )}
+  render() {
+    // console.log(this.props)
+    return (
+      <div className="container">
+        <form onSubmit={this.handleSubmit}>
+          <Row>
+            <Input id="subject" m={6} s={12} value={this.state.subject} onChange={this.handleChange} label="Subject" />
+            <Input id="content" m={6} s={12} value={this.state.content} onChange={this.handleChange} label="Content" />
+          </Row>
+          <Button className="yellow lighten-2 black-text right" waves='light' modal="close"><i className="icon-plus"></i> Add</Button>
+        </form>
+      </div>
+    )
+  }
 }
+
+const mapStateToProps = state => {
+  // console.log('state', state)
+  return {
+    firebase: state.firebase,
+    auth: state.firebase.auth
+  };
+};
 
 // dispatch to redux for processing.
 const mapDispatchToProps = dispatch => {
-    return {
-        addTodo: (todo) => dispatch(addTodo(todo)),
-    }
+  return {
+    addTodo: (todo, firestore) => dispatch(addTodo(todo, firestore)),
+  }
 }
 
-export default connect(null, mapDispatchToProps)(AddTodo);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withFirebase,
+  withFirestore
+)(AddTodo);

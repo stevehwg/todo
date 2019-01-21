@@ -18,25 +18,44 @@ code {
  color: grey;
 }
 /* label focus color */
-.input-field input[type=text]:focus + label {
+.input-field input[type]:focus + label {
  color: grey;
 }
 /* label underline focus color */
-.input-field input[type=text]:focus {
+.input-field input[type]:focus {
  border-bottom: 1px solid #ff6e40;
  box-shadow: 0 1px 0 0 #ff6e40;
 }
+
+
 /* valid color */
-.input-field input[type=text].valid {
+.input-field input[type].valid {
  border-bottom: 1px solid #000;
  box-shadow: 0 1px 0 0 #000;
 }
 /* invalid color */
-.input-field input[type=text].invalid {
+.input-field input[type].invalid {
  border-bottom: 1px solid #000;
  box-shadow: 0 1px 0 0 #000;
 }
+
+.input-field input[type].invalid {
+ border-bottom: 1px solid #000;
+ box-shadow: 0 1px 0 0 #000;
+}
+
 /* icon prefix focus color */
 .input-field .prefix.active {
  color: #000;
+}
+
+
+/* Radio color with-gap */
+[type="radio"].with-gap:checked+label:after {
+  background-color: #ff6e40 !important;
+}
+
+[type="radio"].with-gap:checked+label:before,
+[type="radio"].with-gap:checked+label:after {
+  border: 2px solid #ff6e40 !important;
 }

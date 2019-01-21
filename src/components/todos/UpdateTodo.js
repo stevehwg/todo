@@ -4,6 +4,8 @@ import { Row, Input, Button } from 'react-materialize';
 import { connect } from 'react-redux';
 import { updateTodo, deleteTodo } from '../../actions/todoActions';
 
+import { compose } from 'redux';
+import { withFirestore } from 'react-redux-firebase';
 
 class UpdateTodo extends Component {
     state = {
@@ -30,13 +32,16 @@ class UpdateTodo extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         // console.log(this.state)
-        this.props.updateTodo(this.props.todo.id, this.state)
+        this.props.updateTodo(this.props.todo.id, this.state, this.props.firestore)
     }
     
     handleDelete = (e) => {
         e.preventDefault();
         // console.log(this.props.todo.id);
-        this.props.deleteTodo(this.props.todo.id)
+        const res = window.confirm('Are you sure you want to delete this record?');
+        if (res === true) {
+            this.props.deleteTodo(this.props.todo.id, this.props.firestore)
+        }
     }
 
     render() {
@@ -45,24 +50,38 @@ class UpdateTodo extends Component {
         const { subject, content } = this.state;
         return (
             <div className="container">
+                <form onSubmit={this.handleSubmit}>
                 <Row>
-                    <Input s={6} id="subject" value={subject} onChange={this.handleChange} label="Subject" />
-                    <Input s={6} id="content" value={content} onChange={this.handleChange} label="Content" />
+                    <Input id="subject" m={6} s={12} placeholder={subject} value={subject} onChange={this.handleChange} label="Subject" />
+                    <Input id="content" m={6} s={12} placeholder={content} value={content} onChange={this.handleChange} label="Content" />
                 </Row>
-                <div className="modal-footer">
+                <div className="">
+                    <Button className="btn yellow lighten-2 black-text" modal="close" waves='light'>Update</Button>
                     <Button className="btn red right" waves='light' modal='close' onClick={this.handleDelete}>Delete</Button>
-                    <Button className="btn yellow lighten-2 black-text right" modal="close" waves='light' onClick={this.handleSubmit}>Update</Button>
                 </div>
+                </form>
+                
             </div>
         )}
 }
 
+const mapStateToProps = state => {
+  // console.log('state', state)
+  return {
+    firebase: state.firebase,
+    auth: state.firebase.auth
+  };
+};
+
 // dispatch to redux for processing.
 const mapDispatchToProps = dispatch => {
     return {
-        updateTodo: (id, todo) => dispatch(updateTodo(id, todo)),
-        deleteTodo: (id) => dispatch(deleteTodo(id))
+        updateTodo: (id, todo, firestore) => dispatch(updateTodo(id, todo, firestore)),
+        deleteTodo: (id, firestore) => dispatch(deleteTodo(id, firestore))
     }
 }
 
-export default connect(null, mapDispatchToProps)(UpdateTodo);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withFirestore
+)(UpdateTodo);
