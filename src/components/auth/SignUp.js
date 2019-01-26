@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Input, Button, Preloader } from 'react-materialize';
-import { signUp } from '../../actions/authActions';
+import GoogleButton from 'react-google-button'
+import { signUp, googleLogin } from '../../actions/authActions';
 import { Redirect } from 'react-router-dom';
 
 // connect to redux to access firebase
@@ -16,16 +17,15 @@ class SignUp extends Component {
       password: '',
       firstName: '',
       lastName: '',
-      userType: ''
   }
-  
+
   handleFormChange = (e) => {
       this.setState({
           [e.target.name]: e.target.value
       });
-      
+
   }
-  
+
   handleSubmit = (e) => {
       e.preventDefault();
       const { firebase } = this.props
@@ -35,13 +35,13 @@ class SignUp extends Component {
 
   render() {
     // console.log(this.props)
-    
+    const { firebase, googleLogin } = this.props
     // Redirect to home if user is logged in.
     const { isLoaded, isEmpty } = this.props.auth
     if (isLoaded && !isEmpty) {
       return <Redirect to='/' />
     }
-    
+
     return (
       <Row>
         { !isLoaded ?
@@ -58,20 +58,6 @@ class SignUp extends Component {
                 <Input type="password" name='password' label="password" s={12} onChange={this.handleFormChange} required/>
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                <input name="userType" id='user' type='radio' value='User' label='User' onChange={this.handleFormChange} className='with-gap' />
-                <label htmlFor="user">User</label>
-                </Col>
-                <Col>
-                <input name="userType" id='superuser' type='radio' value='Superuser' label='Superuser' onChange={this.handleFormChange} className='with-gap'/>
-                <label htmlFor="superuser">Superuser</label>
-                </Col>
-                <Col>
-                <input name="userType" id='admin' type='radio' value='Admin' label='Admin' onChange={this.handleFormChange} className='with-gap' />
-                <label htmlFor="admin">Admin</label>
-                </Col>
-              </Row>
               <Row className="center">
                 <Button className="blue lighten-1" waves='light'>Sign Up</Button>
               </Row>
@@ -79,6 +65,17 @@ class SignUp extends Component {
           </Row>
         </form>
         }
+        {/* Google auth */}
+        <Row className="center">Or</Row>
+        <Row>
+          <Col className="center">
+            <GoogleButton
+              label='Sign up with Google'
+              type='light'
+              onClick={() => googleLogin(firebase)}
+            />
+          </Col>
+        </Row>
       </Row>
     )
   }
@@ -95,6 +92,9 @@ const mapDispatchToProps = dispatch => {
   return {
     signUp: (cred, firebase) => {
         dispatch(signUp(cred, firebase))
+    },
+    googleLogin: firebase => {
+      dispatch(googleLogin(firebase))
     }
   }
 }

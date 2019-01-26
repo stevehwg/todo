@@ -10,23 +10,29 @@ import { withFirebase, withFirestore } from 'react-redux-firebase';
 class AddTodo extends Component {
   state = {
     subject: '',
-    content: ''
+    content: '',
+    slug: '',
   }
-  
+
   handleChange = (e) => {
     this.setState({
       [e.target.id] : e.target.value
     })
     // console.log(this.state)
   }
-  
+
   handleSubmit = (e) => {
     e.preventDefault()
     // console.log(this.props.firebase)
     this.props.addTodo(this.state, this.props.firestore)
+
+    // add slugify subject
+    // https://gist.github.com/mathewbyrne/1280286
+
     this.setState({
         subject: '',
-        content: ''
+        content: '',
+        slug: '',
     })
   }
 
