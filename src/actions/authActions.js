@@ -31,9 +31,7 @@ export const googleLogin = (firebase) => {
 
 export const signUp = (cred, firebase) => {
   return (dispatch, getState) => {
-
     // console.log('cred', cred, 'firebase', firebase);
-
     firebase.createUser(
       cred,
       {
@@ -41,10 +39,10 @@ export const signUp = (cred, firebase) => {
         firstName: cred.firstName,
         lastName: cred.lastName,
         displayname: `${cred.firstName} ${cred.lastName}`,
-        userType: cred.userType // could be useful for sister's project
+        // userType: cred.userType // could be useful for sister's project
       }
     ).then((res) => {
-      console.log('authAction', res)
+      // console.log('authAction', res)
       console.log('logged in')
       dispatch({ type: SIGN_UP, res})
     })
