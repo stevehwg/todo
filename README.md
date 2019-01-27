@@ -14,8 +14,7 @@ Checked - redux-thunk, firebase, and firestore.\
 Checked - Interact with firestore, adding data, updating data, deleting data.\
 Checked - Add React Router for different pages.\
 Checked - Add firebase auth.\
-Checked - Add edit for owner only.
-
+Checked - Add edit for owner only.\
 Checked - Add google auth (on gauth branch for now)\
 Checked - Add password reset for email signups
 
