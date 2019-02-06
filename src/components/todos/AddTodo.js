@@ -25,10 +25,6 @@ class AddTodo extends Component {
     e.preventDefault()
     // console.log(this.props.firebase)
     this.props.addTodo(this.state, this.props.firestore)
-
-    // add slugify subject
-    // https://gist.github.com/mathewbyrne/1280286
-
     this.setState({
         subject: '',
         content: '',
